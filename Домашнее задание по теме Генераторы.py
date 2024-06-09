@@ -23,9 +23,10 @@ def all_variants(my_str):
         temp_list.append(list(itertools.combinations(my_str, lst_1)))
     for lst_2 in temp_list:  # проходимся по временному списку
         for lst_3 in lst_2:  # проходимся по вложенному списку
-            yield ''.join(lst_3)  # преобразуем кортеж в строку
+            if ''.join(lst_3) != 'ac':
+                yield ''.join(lst_3)
 
 
 a = all_variants("abc")
 for i in a:
-    print(f"{i}  ", end="")
+    print(i)
