@@ -2,7 +2,7 @@ import sqlite3
 import add_items
 
 
-'Название: Product<number> | Описание: описание <number> | Цена: <number * 100>'
+
 
 connection = sqlite3.connect('catalog_of_goods.db')
 cursor = connection.cursor()
