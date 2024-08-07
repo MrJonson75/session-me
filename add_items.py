@@ -6,5 +6,6 @@ part_list = [
     ('Продукт4', 'Supermins, Хрома пиколинат', 513)
 ]
 
-initiate_db()
-item_add(part_list)
+# initiate_db()
+# item_add(part_list)
+# initiate_db_user()
