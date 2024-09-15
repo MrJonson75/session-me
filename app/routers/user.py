@@ -4,7 +4,7 @@ from typing import Annotated
 from app.schemas import CreateUser, UpdateUser
 from sqlalchemy import insert, select, update, delete
 from app.backend.db_depends import get_db
-from app.models.user import User
+from app.models.user import User, Task
 from slugify import slugify
 
 router = APIRouter(prefix="/user", tags=["user"])
@@ -20,6 +20,16 @@ async def all_users(db: Annotated[Session, Depends(get_db)]):
         )
     return users
 
+
+@router.get("/user_id/tasks")
+async def tasks_by_user_id(db: Annotated[Session, Depends(get_db)], user_id: int):
+    task = db.scalars(select(Task).where(Task.user_id == user_id))
+    if task is None:
+        return HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail='Messages from this user do not exist'
+        )
+    return task
 
 @router.get("/user_id")
 async def user_by_id(db: Annotated[Session, Depends(get_db)], user_id: int):
@@ -82,9 +92,18 @@ async def delete_user(db: Annotated[Session, Depends(get_db)], user_id: int):
             status_code=status.HTTP_404_NOT_FOUND,
             detail='User was not found'
         )
-    db.execute(update(User).where(User.id == user_id))
+    db.execute(delete(User).where(User.id == user_id))
     db.commit()
-    return {
-        'status_code': status.HTTP_200_OK,
-        'transaction': 'User delete is successful'
-    }
+    task = db.scalars(select(Task).where(Task.user_id == user_id))
+    if task is None:
+        return {
+            'status_code': status.HTTP_200_OK,
+            'transaction': 'User delete is successful'
+        }
+    else:
+        db.execute(delete(Task).where(Task.user_id == user_id)).all()
+        db.commit()
+        return {
+            'status_code': status.HTTP_200_OK,
+            'transaction': 'Delete user and all of its messages succeeded'
+        }
