@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Магазин</title>
+</head>
+<body>
+    <h1>
+        <p align="center">
+        Игры
+        </p>
+    </h1>
+    <hr>
+    <div class="container-fluid">
+        {% block crud_container %}
+                <table width="100%">
+                    <colgroup>
+                    <col span="2" style="background:Khaki">
+                    <col style="background-color:LightCyan">
+                    </colgroup>
+                        <tr>
+                            <th><p align="center">№ п/п</p> </th>
+                            <th>Наименование</th>
+                            <th>купить</th>
+                        </tr>
+                    {% for game_id, game in game_list.items %}
+                        <tr>
+                            <td><p align="center">{{ game_id }}</p></td>
+                            <td>{{ game }}</td>
+                            <td><p align="center"><button type="button">Купить</button></p></td>
+                        </tr>
+                    {% endfor %}
+                </table>
+        <form action="/gm" >
+            <p align="center"><button>Вернутся обратно</button></p>
+        </form>
+        {% endblock %}
+    </div>
+</body>
+</html>
