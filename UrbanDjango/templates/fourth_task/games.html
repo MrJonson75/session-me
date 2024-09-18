@@ -1,0 +1,40 @@
+{% extends "fourth_task/menu.html" %}
+
+{% block title %}{{ block.super }}{% endblock %}
+
+{% block pagename %}
+<h1>
+    <p align="center">Игры</p>
+</h1><hr>
+{% endblock %}
+
+{% block menu %}
+    {{ block.super }}
+{% endblock %}
+
+{% block content %}
+<table width="100%">
+    <colgroup>
+    <col span="2" style="background:Khaki">
+    <col style="background-color:LightCyan">
+    </colgroup>
+        <tr>
+            <th><p align="center">№ п/п</p> </th>
+            <th>Наименование</th>
+            <th>купить</th>
+        </tr>
+        {% for game_id, game in game_list.items %}
+        <tr>
+            <td><p align="center">{{ game_id }}</p></td>
+            <td>{{ game }}</td>
+            <td><p align="center"><button type="button">Купить</button></p></td>
+        </tr>
+        {% endfor %}
+</table>
+<form action="/" >
+<p align="center"><button>Вернутся обратно</button></p>
+</form>
+<hr>
+{% endblock %}
+
+

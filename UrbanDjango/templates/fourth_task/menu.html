@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Главная страница{% endblock %}</title>
+</head>
+<body>
+    <header>
+        {% block pagename %}
+            <h1>
+                <p align="center">Главная страница</p>
+            </h1><hr>
+        {% endblock %}
+    </header>
+    <menu>
+        {% block menu %}
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                    <h3><a href="/"> Главная страница </a></h3>
+                </li>
+                <li class="list-group-item">
+                    <h3><a href="/games/"> Магазин </a></h3>
+                </li>
+                <li class="list-group-item">
+                    <h3><a href="/cart/"> Корзина</a></h3>
+                </li>
+            </ul>
+        <hr>
+        {% endblock %}
+    </menu>
+    <main>
+        {% block content %}
+        <p>рабочая информация</p>
+        <hr>
+        {% endblock %}
+    </main>
+</body>
+</html>
+
+
+
+
+
