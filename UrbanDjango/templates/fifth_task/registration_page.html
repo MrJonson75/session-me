@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Регистрация пользователя</title>
+</head>
+<body>
+<br>
+        <form method="post">
+            {% csrf_token %}
+            <table align="center" cellspacing="10">
+                <tr>
+                    <td><label class="" for="username">Введите логин:</label></td>
+                    <td><input type="text" id="username" name="username" maxlength="30"
+                       placeholder="Username" required></td>
+                </tr>
+                <tr>
+                    <td><label for="password">Введите пароль:</label></td>
+                    <td><input type="password" id="password" name="password" maxlength="8"
+                       placeholder="Password" required></td>
+                </tr>
+                <tr>
+                    <td><label for="repeat_password">Повторите пароль:</label></td>
+                    <td><input type="password" id="repeat_password" name="repeat_password" maxlength="8"
+                       placeholder="Re-password" required></td>
+                </tr>
+                <tr>
+                    <td><label for="age">Введите свой возраст:</label></td>
+                    <td><input type="number" id="age" name="age" maxlength="3"
+                       placeholder="Age" required></td>
+                </tr>
+                <tr>
+                    <td><button type="submit">Зарегистрироваться</button></td>
+                </tr>
+            </table>
+        </form>
+    {% if info %}
+        <p>
+            <h1><strong>{{info.error}}</strong></h1>
+        </p>
+    {% endif%}
+</body>
+</html>
