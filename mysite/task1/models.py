@@ -22,7 +22,8 @@ class Game(models.Model):
     """Модель описания продукта"""
     title = models.CharField(max_length=250, db_index=True,
                              verbose_name='Game title')               # - название игры
-    slug = models.SlugField(max_length=200, db_index=True)
+    # slug = models.SlugField(max_length=250, db_index=True,
+    #                         unique=True, verbose_name="URL")
     cost = models.DecimalField(max_digits=15, decimal_places=2,
                                verbose_name='Price')                  # - цена(DecimalField)
     size = models.DecimalField(max_digits=20, decimal_places=2,
