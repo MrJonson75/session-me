@@ -1,0 +1,29 @@
+{% extends "menu.html" %}
+
+{% block title %}{{ block.super }}{% endblock %}
+
+{% block pagename %}
+<h1>
+    <p align="center">Корзина</p>
+</h1><hr>
+{% endblock %}
+
+{% block menu %}
+    {{ block.super }}
+{% endblock %}
+
+{% block content %}
+    <p><h3>{{status_cart}}</h3></p>
+    <form action="/" >
+        <p align="center"><button>Вернутся обратно</button></p>
+    </form>
+<hr>
+{% endblock %}
+
+
+
+
+
+
+
+

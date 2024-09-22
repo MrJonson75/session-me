@@ -8,8 +8,10 @@ class Buyer(models.Model):
     name = models.CharField(max_length=30,
                             db_index=True,
                             verbose_name='Username')        # имя покупателя (username аккаунта)
+    password = models.CharField(max_length=8, verbose_name='Password')
     balance = models.DecimalField(max_digits=12,
                                   decimal_places=2,
+                                  default=0.0,
                                   verbose_name='Balance')   # баланс(DecimalField)
     age = models.IntegerField(max_length=3,
                               verbose_name='Age')           # возраст.
