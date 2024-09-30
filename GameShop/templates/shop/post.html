@@ -1,0 +1,93 @@
+{% extends "shop/menu.html" %}
+{% load shop_tags %}
+
+{% block sidebar %}
+<ul id="leftchapters">
+
+<form method="GET">
+    <select name="paginate_by" id="">
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="5">5</option>
+        <option value="10">10</option>
+    </select>
+    <input type="submit" value="Пагинация">
+</form>
+
+
+        {% if cat_selected == 0 %}
+            <li class="selected">Всe категории</li>
+        {% else %}
+            <li><a href="{% url 'blog' %}">Всe категории</a></li>
+        {% endif %}
+            {% for c in cats %}
+                {% if c.name__count > 0 %}
+                    {% if c.pk == cat_selected %}
+                        <li class="selected">{{c.name}}</li>
+                    {% else %}
+                        <li><a href="{{ c.get_absolute_url }}">{{c.name}}</a></li>
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+
+</ul>
+
+
+
+{% endblock %}
+
+
+{% block breadcrumbs %}
+<div class="header">
+	<ul id="blog_menu" class="mainmenu">
+        {% for b_m in b_menu %}
+			{% if not forloop.last %}
+                <li><a href="{% url b_m.url_name %}">{{b_m.title}}</a></li>
+            {% else %}
+			    <li class="last"><a href="{% url b_m.url_name %}">{{b_m.title}}</a></li>
+            {% endif %}
+		{% endfor %}
+	</ul>
+	<div class="clear"></div>
+</div>
+
+
+
+
+{% endblock %}
+
+
+
+
+{% block content %}
+    <h1>{{title}}</h1>
+    <ul class="list-articles">
+        {% for p in page %}
+            <li>
+                <div class="article-panel">
+                    <p class="first">Категория: {{p.cat}}</p>
+                    <p class="last">Дата: {{p.time_update|date:"d-m-Y H:i:s"}}</p>
+                </div>
+                {% if p.photo %}
+                    <p><img class="img-article-left thumb" src="{{p.photo.url}}"></p>
+                {% endif %}
+                <h2>{{p.title}}</h2>
+                {% autoescape on %}
+                {{p.content|linebreaks|truncatewords:50}}
+                {% endautoescape %}
+                <div class="clear"></dIv>
+                <p class="link-read-post"><a href="{{ p.get_absolute_url }}">Читать пост</a> </p>
+
+            </li>
+        {% empty %}
+            <p align="center">Нет постов.</p>
+        {% endfor %}
+    </ul>
+{% endblock %}
+
+
+
+
+{% block navigation %}
+    {{ block.super }}
+{% endblock %}
