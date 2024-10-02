@@ -1,0 +1,40 @@
+{% extends "blog/base.html" %}
+{% load blog_tags %}
+
+{% block content %}
+    <h1>{{title}}</h1>
+    <ul class="list-articles">
+        {% for p in page %}
+            <li>
+                <div class="article-panel">
+                    <p class="first">Категория: {{p.cat}}</p>
+                    <p class="last">Автор статьи: {{p.author}}  |   Дата публикации: {{p.publish|date:"d-m-Y H:i:s"}}</p>
+                </div>
+                {% if p.photo %}
+                    <p><img class="img-article-left thumb" src="{{p.photo.url}}"></p>
+                {% endif %}
+                <h2>{{p.title}}</h2>
+                {% autoescape on %}
+                {{p.content|linebreaks|truncatewords:50}}
+                {% endautoescape %}
+                <div class="clear"></dIv>
+                <p class="link-read-post">
+                    {% if p.author == request.user %}
+                        <a href="#">Удалить</a>
+                        <a href="{% url 'edit_page' p.slug %}">Редактировать</a>
+                    {% endif%}
+                    <a href="{{ p.get_absolute_url }}">Читать Статью</a> </p>
+
+            </li>
+        {% empty %}
+            <p align="center">Нет постов.</p>
+        {% endfor %}
+    </ul>
+{% endblock %}
+
+
+
+
+{% block navigation %}
+    {{ block.super }}
+{% endblock %}

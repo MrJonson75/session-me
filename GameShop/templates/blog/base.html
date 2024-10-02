@@ -1,0 +1,147 @@
+{% load static %}
+{% load blog_tags %}
+<!DOCTYPE html>
+<html lang="ru">
+	<head>
+		<meta charset="UTF-8">
+		<title>{% block title %} {{ title|default:"No title" }} {% endblock %}</title>
+		<link rel="stylesheet" type="text/css" href="{% static 'blog/css/styles.css' %}">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<link rel="shortcut icon" href="{% static 'blog/images/main.ico' %}" type="image/x-icon"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	</head>
+
+	<body>
+		<table class="table-page" border=0 cellpadding="0" cellspacing="0">
+			<tr>
+				<td valign=top>
+
+{% block mainmenu %}
+			<div class="header">
+						<ul id="mainmenu" class="mainmenu">
+						<li class="logo"><a href="{% url 'home' %}"><div class="logo"></div></a></li>
+	{% get_menu as menu %}
+				{% for m in menu %}
+						<li><a href="{% url m.url_name %}">{{m.title}}</a></li>
+				{% endfor %}
+				{% if request.user.is_authenticated %}
+							<li class="last"> {{user.username}} | <a href="{% url 'logout' %}">Выйти</a></li>
+				{% else %}
+							<li class="last"><a href="{% url 'register' %}">Регистрация</a>|<a href="{% url 'login' %}">Войти</a></li>
+				{% endif %}
+						</ul>
+						<div class="clear"></div>
+			</div>
+{% endblock %}
+
+
+					<table class="table-content" border=0 cellpadding="0" cellspacing="0">
+						<tr>
+							<td valign="top" class="left-chapters">
+								<!-- Начало Sidebar'a -->
+{% block sidebar %}
+					<br>
+		{% if request.user.is_authenticated %}
+				<div class="list-pages">
+					<form class="form-group" method="GET">
+						<select class="form-scrol" name="paginate_by" id="">
+							<option value="2">2</option>
+							<option value="3">3</option>
+							<option value="5">5</option>
+							<option value="10">10</option>
+						</select>
+						<input type="submit" value="Пагинация">
+					</form>
+				</div>
+		{% endif %}
+					<ul id="leftchapters">
+
+					{% if cat_selected == 0 %}
+						<li class="selected">Всe категории</li>
+					{% else %}
+						<li><a href="{% url 'blog' %}">Всe категории</a></li>
+					{% endif %}
+						{% for c in cats %}
+							{% if c.name__count > 0 %}
+								{% if c.pk == cat_selected %}
+									<li class="selected">{{c.name}}</li>
+								{% else %}
+									<li><a href="{{ c.get_absolute_url }}">{{c.name}}</a></li>
+								{% endif %}
+							{% endif %}
+						{% endfor %}
+
+			</ul>
+{% endblock %}
+								<!-- Конец Sidebar'a -->
+							<td valign="top" class="content">
+{% block breadcrumbs %}
+			<div class="header">
+				<ul id="blog_menu" class="mainmenu">
+				{% if request.user.is_authenticated %}
+	{% get_b_menu as b_menu %}
+					{% for b_m in b_menu %}
+						{% if not forloop.last %}
+							<li><a href="{% url b_m.url_name %}">{{b_m.title}}</a></li>
+						{% else %}
+							<li class="last"><a href="{% url b_m.url_name %}">{{b_m.title}}</a></li>
+						{% endif %}
+					{% endfor %}
+				{% endif %}
+				</ul>
+				<div class="clear"></div>
+			</div>
+
+{% endblock %}
+								<!-- Блок контента -->
+								<div class="content-text">
+{% block content %}
+
+{% endblock %}
+
+
+								</div>
+								<!-- Конец блока контента -->
+{% block navigation %}
+
+				<nav class="list-pages">
+					<ul>
+						{% if page_obj.has_previous %}
+						<li class="page-num"><a href="?page={{ page_obj.previous_page_number }}">&lt;</a></li>
+						{% endif %}
+				<!--начало цикла-->
+					   {% for p in paginator.page_range %}
+								   {% if page_obj.number == p %}
+						<li class="page-num page-num-selected">{{ p }}</li>
+								   {% elif p >= page_obj.number|add:-2 and p <= page_obj.number|add:2  %}
+						<li class="page-num"><a href="?page={{ p }}">{{ p }}</a></li>
+								   {% endif %}
+						{% endfor %}
+				<!--Конец цикла		-->
+						{% if page_obj.has_next %}
+						<li class="page-num"><a href="?page={{ page_obj.next_page_number }}">&gt;</a></li>
+						{% endif %}
+					</ul>
+				</nav>
+
+
+{% endblock %}
+
+							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+
+												<!-- Footer -->
+			<tr>
+				<td valign=top>
+					<div id="footer">
+				 		<p align="center">created © 2024</p>
+					</div>
+				</td>
+			</tr>
+		</table>
+									<!-- Конец footer'a и страницы -->
+	</body>
+</html>
