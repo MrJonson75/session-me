@@ -1,0 +1,18 @@
+{% extends 'blog/base.html' %}
+{% load blog_tags %}
+
+{% block content %}
+
+
+             <form  class="form-error " method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                     <p>Вы действительно хотите удалить "{{ object }}"?</p>
+                    {{ form }}
+                         <input type="submit" value="Удалить">
+                        <a href = "../cancel">
+                         <input type="button" value="Отменить" /></a>
+
+
+            </form>
+
+{% endblock %}

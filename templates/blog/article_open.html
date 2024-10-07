@@ -1,0 +1,110 @@
+{% extends 'blog/base.html' %}
+{% load blog_tags %}
+
+
+
+{% block content %}
+
+<div class="article-panel">
+        <! -- Теги -- >
+                    {% with page.tags.all as tags %}
+                    {% if tags %}
+                        <ul class="tags-list">
+                        <li>Теги :</li>
+                            {% for t in tags %}
+                                <li><a href="{{t.get_absolute_url}}">{{t.tag}}</a></li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+        {% endwith %}
+</div>
+
+    {% if page.photo %}
+    <p><img class="img-article-left" src="{{page.photo.url}}"></p>
+    {% endif %}
+
+    {{page.content|linebreaks}}
+
+                <p class="link-read-post">
+                        <a href="{% url 'article_comment' page.slug %}">Коментировать</a>
+                        <a href="#">Отправить на e-mail</a>
+                    {% if page.author == request.user %}
+                        <a href="{% url 'delete_article' page.slug %}">Удалить</a>
+                        <a href="{% url 'edit_page' page.slug %}">Редактировать</a>
+                    {% endif%}
+                </p>
+    <br>
+<hr align="center">
+    <table class="table-page">
+        <tr class="table-page tr">
+            <td>
+
+<!--                <details>-->
+<!--                <summary>Открыть Комментарии</summary>-->
+                    <ul class="list-articles">
+        {% for p in page_obj %}
+            <li>
+                <div class="article-panel">
+                    <p class="last">Автор Комментария: {{p.author_id}}  |   Дата публикации: {{p.created|date:"d-m-Y H:i:s"}}</p>
+                </div>
+                {% if p.photo %}
+                    <p><img class="img-article-left thumb" src="{{p.photo.url}}"></p>
+                {% endif %}
+                {% if p.photo1 %}
+                    <p><img class="img-article-left thumb" src="{{p.photo1.url}}"></p>
+                {% endif %}
+                {% if p.photo2 %}
+                    <p><img class="img-article-left thumb" src="{{p.photo2.url}}"></p>
+                {% endif %}
+                {% autoescape on %}
+                {{p.content|linebreaks|truncatewords:50}}
+                {% endautoescape %}
+                <div class="clear"></dIv>
+
+                    {% if p.author_id == request.user %}
+                    <p class="link-read-post">
+                        <a href="{% url 'delete_comment' p.id %}">Удалить</a>
+                        <a href="{% url 'edit_comment' p.id %}">Редактировать</a>
+                    </p>
+                    {% endif%}
+            </li>
+        {% empty %}
+            <p align="center">Нет Комментариев.</p>
+        {% endfor %}
+    </ul>
+
+<nav class="list-pages">
+					<ul>
+						{% if page_obj.has_previous %}
+						<li class="page-num"><a href="?page={{ page_obj.previous_page_number }}">&lt;</a></li>
+						{% endif %}
+				<!--начало цикла-->
+					   {% for p in page_obj.paginator.page_range %}
+								   {% if page_obj.number == p %}
+						<li class="page-num page-num-selected">{{ p }}</li>
+								   {% elif p >= page_obj.number|add:-2 and p <= page_obj.number|add:2  %}
+						<li class="page-num"><a href="?page={{ p }}">{{ p }}</a></li>
+								   {% endif %}
+						{% endfor %}
+				<!--Конец цикла		-->
+						{% if page_obj.has_next %}
+						<li class="page-num"><a href="?page={{ page_obj.next_page_number }}">&gt;</a></li>
+						{% endif %}
+					</ul>
+				</nav>
+
+
+<!--                </details>-->
+
+
+
+
+            </td>
+        </tr>
+    </table>
+<!--    {{ page.comment_form }}-->
+{% endblock %}
+
+                    {% block navigation %}
+
+                    {% endblock %}
