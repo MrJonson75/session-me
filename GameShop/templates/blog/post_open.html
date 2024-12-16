@@ -1,0 +1,21 @@
+{% extends 'blog/base.html' %}
+{% load blog_tags %}
+
+
+
+{% block content %}
+    <h1>{{page.title}}</h1>
+
+    {% if page.photo %}
+    <p><img class="img-article-left" src="{{page.photo.url}}"></p>
+    {% endif %}
+
+    {{page.content|linebreaks}}
+
+                <p class="link-read-post">
+                    {% if page.author == request.user %}
+                        <a href="#">Удалить</a>
+                        <a href="{% url 'edit_page' page.slug %}">Редактировать</a>
+                    {% endif%}
+                </p>
+{% endblock %}
